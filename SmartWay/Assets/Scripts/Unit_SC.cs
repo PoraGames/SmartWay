@@ -23,7 +23,11 @@ public class Unit_SC : GridObject_SC
     }
     #endregion
 
-    public void TryMove(Vector2Int _deltaPos)
+    /// <summary>
+    /// Заявка на передвижение
+    /// </summary>
+    /// <param name="_deltaPos">Сдвиг точки стремления относительно текущей позиции</param>
+    public bool TryMove(Vector2Int _deltaPos)
     {
         // Проверки на стороне Юнита
         {
@@ -33,28 +37,28 @@ public class Unit_SC : GridObject_SC
                 Mathf.Abs(_deltaPos.y) > 1)
             {
                 Debug.LogError("Некорректная траектория перемещения (" + _deltaPos.x + " ; " + _deltaPos.x + ")");
-                return;
+                return false;
             }
 
             if (isMoving)
             {
                 Debug.Log("Другое перемещение еще не завершено");
-                return;
+                return false;
             } 
         }
 
         PictureTurnInMovingSide(_deltaPos);
 
         // Проверки на стороне карты
-        if (!globalMapSc.CheckMoveLegal(gridPosition + _deltaPos))
+        if (!globalMapSc.CheckMoveLegal(_deltaPos, this))
         {
             Debug.Log("Заявка на перемещение не одобрена");
-            return;
+            return false;
         }
 
         StartMoving(_deltaPos);
+        return true;
     }
-
 
     /// <summary>
     /// Начать перемещение
@@ -87,5 +91,13 @@ public class Unit_SC : GridObject_SC
                 pictureForMirror.transform.localScale = _currentLocalScale;
             }
         }
+    }
+
+    /// <summary>
+    /// Регистрация в глобальных массивах
+    /// </summary>
+    protected override void RegisterInGlobalClasses()
+    {
+        globalMapSc.RegisterInGlobalMap(this);
     }
 }

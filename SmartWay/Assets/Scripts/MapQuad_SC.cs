@@ -12,10 +12,10 @@ public class MapQuad_SC : GridObject_SC
     public bool isOpen = false;
 
     /// <summary>
-    /// Регистрация клетки в глобальных массивах
+    /// Регистрация в глобальных массивах
     /// </summary>
     protected override void RegisterInGlobalClasses()
     {
-        globalMapSc.RegisterLandInGlobalMap(this);
+        globalMapSc.RegisterInGlobalMap(this);
     }
 }
