@@ -4,6 +4,8 @@ using System.Collections;
 public class Unit_SC : GridObject_SC
 {
     public float moveSpeed = 1f;
+    public bool needMirrorPicture = true;
+    public GameObject pictureForMirror;
 
     protected bool isMoving = false;
 
@@ -23,7 +25,7 @@ public class Unit_SC : GridObject_SC
 
     public void TryMove(Vector2Int _deltaPos)
     {
-        // Проверки
+        // Проверки на стороне Юнита
         {
             // Предотвращение некорректных запросов
             if (_deltaPos.x != 0 && _deltaPos.y != 0 ||
@@ -38,17 +40,21 @@ public class Unit_SC : GridObject_SC
             {
                 Debug.Log("Другое перемещение еще не завершено");
                 return;
-            }
+            } 
+        }
 
-            if (!globalMapSc.CheckMoveLegal(gridPosition + _deltaPos))
-            {
-                Debug.Log("Заявка на перемещение не одобрена");
-                return;
-            }
+        PictureTurnInMovingSide(_deltaPos);
+
+        // Проверки на стороне карты
+        if (!globalMapSc.CheckMoveLegal(gridPosition + _deltaPos))
+        {
+            Debug.Log("Заявка на перемещение не одобрена");
+            return;
         }
 
         StartMoving(_deltaPos);
     }
+
 
     /// <summary>
     /// Начать перемещение
@@ -58,5 +64,28 @@ public class Unit_SC : GridObject_SC
     {
         gridPosition += _deltaPos;
         isMoving = true;
+    }
+
+    /// <summary>
+    /// Отражение картинки в сторону движения
+    /// </summary>
+    /// <param name="_deltaPos">Сдвиг точки стремления относительно текущей позиции</param>
+    void PictureTurnInMovingSide(Vector2Int _deltaPos)
+    {
+        // Отражение картинки
+        if (needMirrorPicture && pictureForMirror)
+        {
+            Vector3 _currentLocalScale = pictureForMirror.transform.localScale;
+            if (_deltaPos.x < 0)
+            {
+                _currentLocalScale = new Vector3(-Mathf.Abs(_currentLocalScale.x), _currentLocalScale.y, _currentLocalScale.z);
+                pictureForMirror.transform.localScale = _currentLocalScale;
+            }
+            if (_deltaPos.x > 0)
+            {
+                _currentLocalScale = new Vector3(Mathf.Abs(_currentLocalScale.x), _currentLocalScale.y, _currentLocalScale.z);
+                pictureForMirror.transform.localScale = _currentLocalScale;
+            }
+        }
     }
 }

@@ -1714,6 +1714,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridPosition: {x: 0, y: 0}
   moveSpeed: 3.5
+  needMirrorPicture: 1
+  pictureForMirror: {fileID: 440589750}
 --- !u!212 &1560531559
 SpriteRenderer:
   m_ObjectHideFlags: 0
