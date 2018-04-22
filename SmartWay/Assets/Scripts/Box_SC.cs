@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Box_SC : Unit_SC
+public class Box_SC : Unit_SC, ITask
 {
     public bool isStayOnPoint = false;
     public Sprite offPicture;
@@ -27,5 +27,10 @@ public class Box_SC : Unit_SC
     {
         isStayOnPoint = false;
         spriteRenderer.sprite = offPicture;
+    }
+
+    public bool IsCompleted()
+    {
+        return isStayOnPoint;
     }
 }
