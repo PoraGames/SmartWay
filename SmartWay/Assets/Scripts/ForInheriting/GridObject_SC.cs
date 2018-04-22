@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// Объект плотно взаимодействующий с "сеткой челых значений".
 /// Выравнивается по ней, обменивается данными
@@ -26,6 +30,13 @@ public class GridObject_SC : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
     }
+
+    protected virtual void OnDrawGizmos()
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+    }
+
+
     #endregion
 
     /// <summary>
