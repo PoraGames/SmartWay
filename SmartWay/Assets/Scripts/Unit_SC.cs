@@ -15,6 +15,7 @@ public class Unit_SC : GridObject_SC
         if (isMoving)
         {
             transform.position = Vector2.MoveTowards(transform.position, gridPosition, moveSpeed * Time.deltaTime);// Идем в точку стремления с постоянной скоростью
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// Новая позиция по Z
             if (Vector2.Distance(transform.position, gridPosition) <= 0.01f)// Если пришли
             {
                 isMoving = false;
