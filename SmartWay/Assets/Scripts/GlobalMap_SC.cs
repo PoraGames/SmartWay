@@ -4,10 +4,19 @@ using System.Collections.Generic;
 
 public class GlobalMap_SC : MonoBehaviour
 {
+    /// <summary>
+    /// Статичные элементы карты
+    /// </summary>
     public Dictionary<Vector2Int, MapQuad_SC> landObjects = 
         new Dictionary<Vector2Int, MapQuad_SC>();
-    public Dictionary<Vector2Int, Unit_SC> landUnits =
+    /// <summary>
+    /// Большие подвижные элементы (занимают всю клетку)
+    /// </summary>
+    public Dictionary<Vector2Int, Unit_SC> landBigUnits =
         new Dictionary<Vector2Int, Unit_SC>();
+
+    public Dictionary<Vector2Int, SmallObject_SC> landSmallObjects =
+        new Dictionary<Vector2Int, SmallObject_SC>();
 
     [Space(30)]
     [Header("Информация о карте уровня"), Space(15)]
@@ -16,6 +25,8 @@ public class GlobalMap_SC : MonoBehaviour
     public int landsObjectsQuantity = 0;
     [Header("Количество юнитов")]
     public int landsUnitsQuantity = 0;
+    [Header("Количество маленьких объектов")]
+    public int landsSmallObjectsQuantity = 0;
 
     #region Registration
     /// <summary>
@@ -48,11 +59,31 @@ public class GlobalMap_SC : MonoBehaviour
     {
         Vector2Int _key = _objectForRegister.gridPosition;
 
-        if (!landUnits.ContainsKey(_key))
+        if (!landBigUnits.ContainsKey(_key))
         {
-            landUnits.Add(_key, _objectForRegister);
+            landBigUnits.Add(_key, _objectForRegister);
 
             ++landsUnitsQuantity;
+        }
+        else
+        {
+            Debug.LogError("Ключ " + _key + " уже используется");
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_objectForRegister">регистрируемый объект</param>
+    public void RegisterInGlobalMap(SmallObject_SC _objectForRegister)
+    {
+        Vector2Int _key = _objectForRegister.gridPosition;
+
+        if (!landSmallObjects.ContainsKey(_key))
+        {
+            landSmallObjects.Add(_key, _objectForRegister);
+
+            ++landsSmallObjectsQuantity;
         }
         else
         {
@@ -75,9 +106,9 @@ public class GlobalMap_SC : MonoBehaviour
                 return false;
         }
 
-        if (landUnits.ContainsKey(_moveUnit.gridPosition + _posForCheck))
+        if (landBigUnits.ContainsKey(_moveUnit.gridPosition + _posForCheck))
         {
-            if (!landUnits[_moveUnit.gridPosition + _posForCheck].TryMove(_posForCheck))
+            if (!landBigUnits[_moveUnit.gridPosition + _posForCheck].TryMove(_posForCheck))
                 return false;
         }
 
@@ -87,7 +118,7 @@ public class GlobalMap_SC : MonoBehaviour
 
     void MoveElementInDictionary(Vector2Int _posForCheck, Unit_SC _moveUnit)
     {
-        landUnits.Add(_moveUnit.gridPosition + _posForCheck, _moveUnit);
-        landUnits.Remove(_moveUnit.gridPosition);
+        landBigUnits.Add(_moveUnit.gridPosition + _posForCheck, _moveUnit);
+        landBigUnits.Remove(_moveUnit.gridPosition);
     }
 }

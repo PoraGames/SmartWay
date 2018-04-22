@@ -36,7 +36,6 @@ public class GridObject_SC : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
     }
 
-
     #endregion
 
     /// <summary>
