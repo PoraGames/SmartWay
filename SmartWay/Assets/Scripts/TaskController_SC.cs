@@ -14,6 +14,8 @@ public interface ITask
 [ExecuteInEditMode]
 public class TaskController_SC : MonoBehaviour
 {
+    public ProgressBar_SC progressBar;
+
     /// <summary>
     /// Все задания уровня
     /// </summary>
@@ -33,7 +35,8 @@ public class TaskController_SC : MonoBehaviour
         }
 #endif
 
-        CheckTasksComplete();// TODO: Перестать вызывать в Uodate()
+        if (Application.isPlaying)
+            CheckTasksComplete();// TODO: Перестать вызывать в Uodate()
     }
 
     /// <summary>
@@ -42,15 +45,16 @@ public class TaskController_SC : MonoBehaviour
     /// <returns>true если все задания выполнены</returns>
     bool CheckTasksComplete()
     {
+        int _completed = 0;
         for (int i = 0; i < tasks.Length; ++i)
         {
-            if (!((ITask) tasks[i].GetComponent<MonoBehaviour>()).IsCompleted())
+            if (((ITask)tasks[i].GetComponent<MonoBehaviour>()).IsCompleted())
             {
-                return false;
+                ++_completed;
             }
         }
 
-        Debug.Log("Уровень завершен =)");
+        progressBar.SetFullPart((float)_completed / (float)tasks.Length);
         return true;
     }
 }
