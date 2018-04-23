@@ -7,7 +7,8 @@ public class UnitUnderPlayerControl_SC : Unit_SC
     {
         base.Update();
 
-        InputReader();
+        if (!GlobalData_SC.Instance.isGamePaused)
+            InputReader();
     }
 
     void InputReader()

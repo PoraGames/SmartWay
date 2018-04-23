@@ -36,7 +36,12 @@ public class TaskController_SC : MonoBehaviour
 #endif
 
         if (Application.isPlaying)
-            CheckTasksComplete();// TODO: Перестать вызывать в Uodate()
+        {
+            if (CheckTasksComplete()) // TODO: Перестать вызывать в Uodate()
+            {
+                AllTaskCompleted();
+            }
+        }
     }
 
     /// <summary>
@@ -55,6 +60,15 @@ public class TaskController_SC : MonoBehaviour
         }
 
         progressBar.SetFullPart((float)_completed / (float)tasks.Length);
-        return true;
+
+        return (_completed == tasks.Length);
+    }
+
+    /// <summary>
+    /// Все задачи уровня выполнены
+    /// </summary>
+    void AllTaskCompleted()
+    {
+        Debug.Log("Все задачи уровня выполнены");
     }
 }
