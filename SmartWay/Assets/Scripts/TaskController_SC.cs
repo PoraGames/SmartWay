@@ -15,6 +15,7 @@ public interface ITask
 public class TaskController_SC : MonoBehaviour
 {
     public ProgressBar_SC progressBar;
+    public LevelMenu_SC levelMenuSc;
 
     /// <summary>
     /// Все задания уровня
@@ -70,5 +71,6 @@ public class TaskController_SC : MonoBehaviour
     void AllTaskCompleted()
     {
         Debug.Log("Все задачи уровня выполнены");
+        levelMenuSc.LevelCompleted();
     }
 }

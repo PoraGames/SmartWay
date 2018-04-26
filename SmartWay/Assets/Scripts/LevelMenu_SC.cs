@@ -27,6 +27,6 @@ public class LevelMenu_SC : MonoBehaviour
 
     public void LevelCompleted()
     {
-
+        levelCompletedMenu.SetActive(true);
     }
 }
