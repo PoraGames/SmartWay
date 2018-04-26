@@ -15,6 +15,12 @@ public class LevelChanger_SC : MonoBehaviour
         SceneManager.LoadScene(newLevelNumber + "_lvl");
     }
 
+    public void LoadNewLevel(string newLevelName)
+    {
+        // Application.LoadLevel("1_lvl");
+        SceneManager.LoadScene(newLevelName);
+    }
+
     public void ReloadLevel()
     {
         LoadNewLevel(currentLevelNumber);
